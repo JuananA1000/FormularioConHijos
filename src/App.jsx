@@ -8,23 +8,42 @@ import { TextoContent } from './components/TextoContent';
 import { TextField, Button, Box, Typography, MenuItem } from '@mui/material';
 
 import './App.css';
+import js from '@eslint/js';
 
 const App = () => {
   const formik = useFormik({
     initialValues: {
       tipoDeContenido: '',
       titulo: '',
-      apellidos: '',
-      terminos: false,
+      autor: '',
+
+      // Campos específicos para cada tipo de contenido
+      videoUrl: '',
+      audioUrl: '',
+      texto: '',
     },
 
     onSubmit: (values) => {
-      console.log('Datos enviados:', values);
-      alert('Formulario enviado con éxito');
+      let datosAEnviar = {
+        tipoDeContenido: values.tipoDeContenido,
+        titulo: values.titulo,
+        autor: values.autor,
+      };
+
+      if (values.tipoDeContenido === 'video') {
+        datosAEnviar.videoUrl = values.videoUrl;
+      } else if (values.tipoDeContenido === 'audio') {
+        datosAEnviar.audioUrl = values.audioUrl;
+      } else if (values.tipoDeContenido === 'texto') {
+        datosAEnviar.texto = values.texto;
+      }
+
+      console.log('Objeto final a enviar:', datosAEnviar);
+
+      formik.resetForm();
     },
   });
 
-  // Opciones para el select
   const tiposDeContenido = [
     { value: 'video', label: 'Vídeo' },
     { value: 'audio', label: 'Audio' },
@@ -34,7 +53,7 @@ const App = () => {
   return (
     <div className='app'>
       <h1>Formulario de Contenido</h1>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <TextField
           fullWidth
           select // Esta propiedad convierte el TextField en un Select
@@ -57,7 +76,7 @@ const App = () => {
           fullWidth
           id='titulo'
           name='titulo'
-          // sx={{ opacity: 0.5 }}
+          sx={!formik.values.tipoDeContenido ? { opacity: 0.5 } : {}}
           label='Título'
           value={formik.values.titulo}
           onChange={formik.handleChange}
@@ -71,6 +90,7 @@ const App = () => {
           fullWidth
           id='autor'
           name='autor'
+          sx={!formik.values.tipoDeContenido ? { opacity: 0.5 } : {}}
           label='Autor'
           value={formik.values.autor}
           onChange={formik.handleChange}
