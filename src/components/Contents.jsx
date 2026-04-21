@@ -1,64 +1,70 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper, Divider, Stack, Button } from '@mui/material';
+import { Box, Typography, Paper, Button, Stack, Dialog, DialogTitle, DialogActions } from '@mui/material';
 
 export const Contents = () => {
   const [lista, setLista] = useState([]);
-
-  // const borrarTODO = () => {
-  //   localStorage.removeItem('listaContenidos');
-  //   setLista([]);
-  // };
+  const [pasoBorrado, setPasoBorrado] = useState(0);
 
   useEffect(() => {
     const datosGuardados = JSON.parse(localStorage.getItem('listaContenidos')) || [];
     setLista(datosGuardados);
   }, []);
 
-  if (lista.length === 0) {
-    return <Typography sx={{ p: 4 }}>No hay contenidos guardados todavía.</Typography>;
-  }
+  const borrarTodo = () => {
+    localStorage.removeItem('listaContenidos');
+    setLista([]);
+    setPasoBorrado(0);
+    console.log('%cBiblioteca purgada', 'background-color: #d32f2f; color: white; padding: 5px;');
+  };
+
+  const cancelarBorrado = () => setPasoBorrado(0);
 
   return (
     <Box sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
       <Typography variant='h4' gutterBottom align='center'>
-        Mi Biblioteca de Contenidos
+        Mi Biblioteca
       </Typography>
 
+      {/* Confirmación 1 */}
+      <Dialog open={pasoBorrado === 1} onClose={cancelarBorrado}>
+        <DialogTitle>¿Seguro que quieres borrar?</DialogTitle>
+        <DialogActions>
+          <Button onClick={cancelarBorrado}>No</Button>
+          <Button onClick={() => setPasoBorrado(2)} color='error' variant='contained'>
+            Sí
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Confirmación 2 (La Broma) */}
+      <Dialog open={pasoBorrado === 2} onClose={cancelarBorrado}>
+        <DialogTitle>¿Seguro, seguro?</DialogTitle>
+        <DialogActions>
+          <Button onClick={cancelarBorrado}>No, no</Button>
+          <Button onClick={borrarTodo} color='error' variant='contained'>
+            QUE SÍ, COJONES
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* --- LISTADO DE CONTENIDOS --- */}
       <Stack spacing={2}>
         {lista.map((item) => (
           <Paper key={item.id} elevation={2} sx={{ p: 3, borderLeft: '5px solid #288f09' }}>
             <Typography variant='h6'>{item.titulo}</Typography>
-            <Typography variant='body2' color='textSecondary'>
-              Por: {item.autor}
-            </Typography>
             <Typography variant='caption' sx={{ display: 'block', mb: 1, fontWeight: 'bold' }}>
               TIPO: {item.tipoDeContenido.toUpperCase()}
             </Typography>
-
-            <Divider sx={{ my: 1 }} />
-
-            {item.tipoDeContenido === 'video' && (
-              <Typography variant='body2'>
-                🎥 <b>URL Video:</b> {item.videoUrl}
-              </Typography>
-            )}
-            {item.tipoDeContenido === 'audio' && (
-              <Typography variant='body2'>
-                🎧 <b>URL Audio:</b> {item.audioUrl}
-              </Typography>
-            )}
-            {item.tipoDeContenido === 'texto' && (
-              <Typography variant='body2'>
-                📄 <b>Contenido:</b> {item.texto}
-              </Typography>
-            )}
+            {/* ... resto de campos (url, texto, etc) ... */}
           </Paper>
         ))}
       </Stack>
 
-      {/* <Button onClick={() => borrarTODO()} color='error' variant='contained' fullWidth sx={{ mt: 4 }}>
-        Borrar todo el contenido de la biblioteca
-      </Button> */}
+      {lista.length > 0 && (
+        <Button variant='outlined' color='error' fullWidth onClick={() => setPasoBorrado(1)} sx={{ mb: 3 }}>
+          Borrar todo el contenido
+        </Button>
+      )}
     </Box>
   );
 };
