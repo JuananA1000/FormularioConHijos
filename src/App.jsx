@@ -1,15 +1,11 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import {
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  Box,
-  Typography,
-  FormHelperText,
-  MenuItem,
-} from '@mui/material';
+
+import { VideoContent } from './components/VideoContent';
+import { AudioContent } from './components/AudioContent';
+import { TextoContent } from './components/TextoContent';
+
+import { TextField, Button, Box, Typography, MenuItem } from '@mui/material';
 
 import './App.css';
 
@@ -17,17 +13,11 @@ const App = () => {
   const formik = useFormik({
     initialValues: {
       tipoDeContenido: '',
-      nombre: '',
+      titulo: '',
       apellidos: '',
       terminos: false,
     },
-    validate: (values) => {
-      const errors = {};
-      if (!values.nombre) errors.nombre = 'El nombre es obligatorio';
-      if (!values.apellidos) errors.apellidos = 'Los apellidos son obligatorios';
-      if (!values.terminos) errors.terminos = 'Debes aceptar los términos';
-      return errors;
-    },
+
     onSubmit: (values) => {
       console.log('Datos enviados:', values);
       alert('Formulario enviado con éxito');
@@ -48,8 +38,8 @@ const App = () => {
         <TextField
           fullWidth
           select // Esta propiedad convierte el TextField en un Select
-          id='plan'
-          name='plan'
+          id='tipoDeContenido'
+          name='tipoDeContenido'
           label='Selecciona el tipo de contenido'
           value={formik.values.tipoDeContenido}
           onChange={formik.handleChange}
@@ -67,6 +57,7 @@ const App = () => {
           fullWidth
           id='titulo'
           name='titulo'
+          // sx={{ opacity: 0.5 }}
           label='Título'
           value={formik.values.titulo}
           onChange={formik.handleChange}
@@ -74,7 +65,7 @@ const App = () => {
           error={formik.touched.titulo && Boolean(formik.errors.titulo)}
           helperText={formik.touched.titulo && formik.errors.titulo}
           disabled={!formik.values.tipoDeContenido}
-          />
+        />
 
         <TextField
           fullWidth
@@ -89,23 +80,9 @@ const App = () => {
           disabled={!formik.values.tipoDeContenido}
         />
 
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                id='terminos'
-                name='terminos'
-                checked={formik.values.terminos}
-                onChange={formik.handleChange}
-                color='primary'
-              />
-            }
-            label='Acepto los términos y condiciones'
-          />
-          {formik.touched.terminos && formik.errors.terminos && (
-            <FormHelperText error>{formik.errors.terminos}</FormHelperText>
-          )}
-        </Box>
+        {formik.values.tipoDeContenido === 'video' && <VideoContent formik={formik} />}
+        {formik.values.tipoDeContenido === 'audio' && <AudioContent formik={formik} />}
+        {formik.values.tipoDeContenido === 'texto' && <TextoContent formik={formik} />}
 
         <Button color='primary' variant='contained' fullWidth type='submit'>
           Enviar
