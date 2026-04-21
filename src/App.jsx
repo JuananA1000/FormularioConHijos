@@ -31,21 +31,27 @@ const App = () => {
     },
 
     onSubmit: (values) => {
-      let datosAEnviar = {
+      let nuevoContenido = {
         tipoDeContenido: values.tipoDeContenido,
         titulo: values.titulo,
         autor: values.autor,
       };
 
       if (values.tipoDeContenido === 'video') {
-        datosAEnviar.videoUrl = values.videoUrl;
+        nuevoContenido.videoUrl = values.videoUrl;
       } else if (values.tipoDeContenido === 'audio') {
-        datosAEnviar.audioUrl = values.audioUrl;
+        nuevoContenido.audioUrl = values.audioUrl;
       } else if (values.tipoDeContenido === 'texto') {
-        datosAEnviar.texto = values.texto;
+        nuevoContenido.texto = values.texto;
       }
 
-      console.log('%cDatos a enviar:', 'background-color: #288f09;  padding: 5px; display: block;', datosAEnviar);
+      const contenidosPrevios = JSON.parse(localStorage.getItem('listaContenidos')) || [];
+      const nuevaLista = [nuevoContenido, ...contenidosPrevios];
+      localStorage.setItem('listaContenidos', JSON.stringify(nuevaLista));
+
+      goTo('/contents');
+
+      console.log('%cDatos a enviar:', 'background-color: #288f09;  padding: 5px; display: block;', nuevoContenido);
 
       formik.resetForm();
     },
@@ -135,6 +141,9 @@ const App = () => {
       {path === '/contents' && (
         <>
           <Contents />
+          <Button onClick={() => goTo('/')} color='primary' variant='contained' fullWidth>
+            Volver
+          </Button>
         </>
       )}
     </div>

@@ -1,57 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper, Divider } from '@mui/material';
+import { Box, Typography, Paper, Divider, Stack, Button } from '@mui/material';
 
 export const Contents = () => {
-  const [data, setData] = useState(null);
+  const [lista, setLista] = useState([]);
+
+  // const borrarTODO = () => {
+  //   localStorage.removeItem('listaContenidos');
+  //   setLista([]);
+  // };
 
   useEffect(() => {
-    // Recuperamos el string y lo parseamos
-    const savedData = localStorage.getItem('ultimoContenido');
-    if (savedData) {
-      setData(JSON.parse(savedData));
-    }
+    const datosGuardados = JSON.parse(localStorage.getItem('listaContenidos')) || [];
+    setLista(datosGuardados);
   }, []);
 
-  if (!data) {
-    return <Typography sx={{ p: 4 }}>No hay contenido guardado.</Typography>;
+  if (lista.length === 0) {
+    return <Typography sx={{ p: 4 }}>No hay contenidos guardados todavía.</Typography>;
   }
 
   return (
-    <Box sx={{ p: 4, maxWidth: 500, margin: 'auto' }}>
-      <Paper elevation={3} sx={{ p: 3, backgroundColor: '#f5f5f5' }}>
-        <Typography variant='h4' gutterBottom color='primary'>
-          Contenido Recibido
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
+    <Box sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
+      <Typography variant='h4' gutterBottom align='center'>
+        Mi Biblioteca de Contenidos
+      </Typography>
 
-        <Typography variant='subtitle1'>
-          <strong>Título:</strong> {data.titulo}
-        </Typography>
-        <Typography variant='subtitle1'>
-          <strong>Autor:</strong> {data.autor}
-        </Typography>
-        <Typography variant='subtitle1'>
-          <strong>Tipo:</strong> {data.tipoDeContenido.toUpperCase()}
-        </Typography>
+      <Stack spacing={2}>
+        {lista.map((item) => (
+          <Paper key={item.id} elevation={2} sx={{ p: 3, borderLeft: '5px solid #288f09' }}>
+            <Typography variant='h6'>{item.titulo}</Typography>
+            <Typography variant='body2' color='textSecondary'>
+              Por: {item.autor}
+            </Typography>
+            <Typography variant='caption' sx={{ display: 'block', mb: 1, fontWeight: 'bold' }}>
+              TIPO: {item.tipoDeContenido.toUpperCase()}
+            </Typography>
 
-        <Box sx={{ mt: 2, p: 2, bgcolor: '#e0e0e0', borderRadius: 1 }}>
-          {data.tipoDeContenido === 'video' && (
-            <Typography>
-              <strong>URL Video:</strong> {data.videoUrl}
-            </Typography>
-          )}
-          {data.tipoDeContenido === 'audio' && (
-            <Typography>
-              <strong>URL Audio:</strong> {data.audioUrl}
-            </Typography>
-          )}
-          {data.tipoDeContenido === 'texto' && (
-            <Typography>
-              <strong>Texto:</strong> {data.texto}
-            </Typography>
-          )}
-        </Box>
-      </Paper>
+            <Divider sx={{ my: 1 }} />
+
+            {item.tipoDeContenido === 'video' && (
+              <Typography variant='body2'>
+                🎥 <b>URL Video:</b> {item.videoUrl}
+              </Typography>
+            )}
+            {item.tipoDeContenido === 'audio' && (
+              <Typography variant='body2'>
+                🎧 <b>URL Audio:</b> {item.audioUrl}
+              </Typography>
+            )}
+            {item.tipoDeContenido === 'texto' && (
+              <Typography variant='body2'>
+                📄 <b>Contenido:</b> {item.texto}
+              </Typography>
+            )}
+          </Paper>
+        ))}
+      </Stack>
+
+      {/* <Button onClick={() => borrarTODO()} color='error' variant='contained' fullWidth sx={{ mt: 4 }}>
+        Borrar todo el contenido de la biblioteca
+      </Button> */}
     </Box>
   );
 };
