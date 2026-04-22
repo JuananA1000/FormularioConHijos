@@ -8,6 +8,11 @@ import { TextoContent } from './components/contents/TextoContent';
 import { Contents } from './components/Contents';
 
 import { TextField, Button, Box, Typography, MenuItem } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+
 
 import './App.css';
 
@@ -24,6 +29,7 @@ const App = () => {
       tipoDeContenido: '',
       titulo: '',
       autor: '',
+      fechaDePublicacion: dayjs().locale('es'), // Objeto dayjs original (hoy)
 
       videoUrl: '',
       audioUrl: '',
@@ -39,7 +45,7 @@ const App = () => {
 
       const campoExtra = camposPorTipo[values.tipoDeContenido];
 
-      if (!values.titulo || !values.autor || !values[campoExtra]) {
+      if (!values.titulo || !values.autor || !values.fechaDePublicacion || !values[campoExtra]) {
         alert(`Por favor, completa TODOS LOS CAMPOS para el contenido de ${values.tipoDeContenido}.`);
         return;
       }
@@ -49,6 +55,7 @@ const App = () => {
         tipoDeContenido: values.tipoDeContenido,
         titulo: values.titulo,
         autor: values.autor,
+        fechaDePublicacion: dayjs(values.fechaDePublicacion).format('DD-MM-YYYY'),
         [campoExtra]: values[campoExtra], // Propiedad dinámica
       };
 
@@ -132,6 +139,28 @@ const App = () => {
               helperText={formik.touched.autor && formik.errors.autor}
               disabled={!formik.values.tipoDeContenido}
             />
+
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                fullWidth
+                id='fechaDePublicacion'
+                name='fechaDePublicacion'
+                label='Fecha de Publicación'
+                value={formik.values.fechaDePublicacion}
+                onChange={(newValue) => formik.setFieldValue('fechaDePublicacion', newValue)}
+                sx={!formik.values.tipoDeContenido ? { opacity: 0.5 } : {}}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.fechaDePublicacion && Boolean(formik.errors.fechaDePublicacion)}
+                    helperText={formik.touched.fechaDePublicacion && formik.errors.fechaDePublicacion}
+                    disabled={!formik.values.tipoDeContenido}
+                  />
+                )}
+              />
+            </LocalizationProvider>
 
             {formik.values.tipoDeContenido === 'video' && <VideoContent formik={formik} />}
             {formik.values.tipoDeContenido === 'audio' && <AudioContent formik={formik} />}
