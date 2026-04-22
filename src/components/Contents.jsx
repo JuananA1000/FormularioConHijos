@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper, Button, Stack, Dialog, DialogTitle, DialogActions } from '@mui/material';
+import { Box, Typography, Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
+import { ContentsList } from './ContentsList';
 
 export const Contents = () => {
   const [lista, setLista] = useState([]);
@@ -48,20 +49,11 @@ export const Contents = () => {
       </Dialog>
 
       {/* --- LISTADO DE CONTENIDOS --- */}
-      <Stack spacing={2}>
-        {lista.map((item) => (
-          <Paper key={item.id} elevation={2} sx={{ p: 3, borderLeft: '5px solid #288f09' }}>
-            <Typography variant='h6'>{item.titulo}</Typography>
-            <Typography variant='caption' sx={{ display: 'block', mb: 1, fontWeight: 'bold' }}>
-              TIPO: {item.tipoDeContenido.toUpperCase()}
-            </Typography>
-            {/* ... resto de campos (url, texto, etc) ... */}
-          </Paper>
-        ))}
-      </Stack>
+      <ContentsList lista={lista} />
 
+      {/* Botón de borrado al final */}
       {lista.length > 0 && (
-        <Button variant='outlined' color='error' fullWidth onClick={() => setPasoBorrado(1)} sx={{ mb: 3 }}>
+        <Button variant='outlined' color='error' fullWidth onClick={() => setPasoBorrado(1)}>
           Borrar todo el contenido
         </Button>
       )}
