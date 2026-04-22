@@ -39,10 +39,22 @@ const App = () => {
       };
 
       if (values.tipoDeContenido === 'video') {
+        if (values.titulo === '' || values.autor === '' || values.videoUrl === '') {
+          alert('Por favor, completa todos los campos para el contenido de video.');
+          return;
+        }
         nuevoContenido.videoUrl = values.videoUrl;
       } else if (values.tipoDeContenido === 'audio') {
+        if (values.titulo === '' || values.autor === '' || values.audioUrl === '') {
+          alert('Por favor, completa todos los campos para el contenido de audio.');
+          return;
+        }
         nuevoContenido.audioUrl = values.audioUrl;
       } else if (values.tipoDeContenido === 'texto') {
+        if (values.titulo === '' || values.autor === '' || values.texto === '') {
+          alert('Por favor, completa todos los campos para el contenido de texto.');
+          return;
+        }
         nuevoContenido.texto = values.texto;
       }
 
