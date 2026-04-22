@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 
 import { useFormik } from 'formik';
 
-import { VideoContent } from './components/VideoContent';
-import { AudioContent } from './components/AudioContent';
-import { TextoContent } from './components/TextoContent';
+import { VideoContent } from './components/contents/VideoContent';
+import { AudioContent } from './components/contents/AudioContent';
+import { TextoContent } from './components/contents/TextoContent';
 import { Contents } from './components/Contents';
 
 import { TextField, Button, Box, Typography, MenuItem } from '@mui/material';
@@ -32,6 +32,7 @@ const App = () => {
 
     onSubmit: (values) => {
       let nuevoContenido = {
+        id: Date.now(),
         tipoDeContenido: values.tipoDeContenido,
         titulo: values.titulo,
         autor: values.autor,
