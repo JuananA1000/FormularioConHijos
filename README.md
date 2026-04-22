@@ -1,12 +1,19 @@
 # Formulario con hijos
 
-Es una practica poco habitual, pero, en este proyecto, vamos a hacer un formulario que admita varios archivos: vease texto, formatos de audios o vídeos o lo que sea. para ello, habrá una info comun a todos los contenidos (título, autor, etc...) y una info especifica para cada formato:
+No es muy habitual que los formularios tengan elementos descendientes, pero, en este proyecto, lo vamos a hacer. Vamos a hacer un formulario que admita **varios tipos de archivos**, para ello, habrá una info común a todos los contenidos, que registraremos en el **formulario padre** como:
 
-- Videos: archivo de video o link, lo que se permita
+- Título del contenido
 
-- Audio: igual que el video
+- Autor del mismo
 
-- Texto: texto enriquecido, quiza con un campo [wysiwyg](https://es.wikipedia.org/wiki/WYSIWYG "wysiwyg").
+- Fecha de creación que, para no complicarnos, será automática
 
-"Subiremos" o intentaremos subir estos contenidos a la api de [JSONPlaceholder](https://jsonplaceholder.typicode.com/ "JSONPlaceholder").
-También habra una galeria de contenidos que se almacenen en otra página para visualizarse pero, como no tenemos un backend real, lo haremos con `localStorage` o `sessionStorage`, ya veré.
+Y una info específica en el **formulario hijo** para cada formato:
+
+- Vídeos: enlace del vídeo de YouTube
+
+- Audio: enlace del audio (de YouTube también, para simplificar)
+
+- Texto: texto enriquecido, con un campo [wysiwyg](https://es.wikipedia.org/wiki/WYSIWYG "wysiwyg").
+
+También elaboraremos una una **galería de contenidos** que almacenen dichos contenidos y que se visualizarán **en otra página**. Como no disponemos de un backend real, mantendremos estos contenidos con `localStorage`.
