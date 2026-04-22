@@ -31,41 +31,34 @@ const App = () => {
     },
 
     onSubmit: (values) => {
+      const camposPorTipo = {
+        video: 'videoUrl',
+        audio: 'audioUrl',
+        texto: 'texto',
+      };
+
+      const campoExtra = camposPorTipo[values.tipoDeContenido];
+
+      if (!values.titulo || !values.autor || !values[campoExtra]) {
+        alert(`Por favor, completa TODOS LOS CAMPOS para el contenido de ${values.tipoDeContenido}.`);
+        return;
+      }
+
       let nuevoContenido = {
         id: Date.now(),
         tipoDeContenido: values.tipoDeContenido,
         titulo: values.titulo,
         autor: values.autor,
+        [campoExtra]: values[campoExtra], // Propiedad dinámica
       };
-
-      if (values.tipoDeContenido === 'video') {
-        if (values.titulo === '' || values.autor === '' || values.videoUrl === '') {
-          alert('Por favor, completa todos los campos para el contenido de video.');
-          return;
-        }
-        nuevoContenido.videoUrl = values.videoUrl;
-      } else if (values.tipoDeContenido === 'audio') {
-        if (values.titulo === '' || values.autor === '' || values.audioUrl === '') {
-          alert('Por favor, completa todos los campos para el contenido de audio.');
-          return;
-        }
-        nuevoContenido.audioUrl = values.audioUrl;
-      } else if (values.tipoDeContenido === 'texto') {
-        if (values.titulo === '' || values.autor === '' || values.texto === '') {
-          alert('Por favor, completa todos los campos para el contenido de texto.');
-          return;
-        }
-        nuevoContenido.texto = values.texto;
-      }
 
       const contenidosPrevios = JSON.parse(localStorage.getItem('listaContenidos')) || [];
       const nuevaLista = [nuevoContenido, ...contenidosPrevios];
       localStorage.setItem('listaContenidos', JSON.stringify(nuevaLista));
 
+      console.log('%cDatos a enviar:', 'background-color: #288f09; padding: 5px; display: block;', nuevoContenido);
+
       goTo('/contents');
-
-      console.log('%cDatos a enviar:', 'background-color: #288f09;  padding: 5px; display: block;', nuevoContenido);
-
       formik.resetForm();
     },
   });
