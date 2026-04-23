@@ -16,7 +16,7 @@ export const ContentsList = ({ lista }) => {
 
         const thumbnail =
           item.tipoDeContenido === 'video' && videoId
-            ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` 
+            ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
             : item.tipoDeContenido === 'audio'
               ? 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop'
               : null;
