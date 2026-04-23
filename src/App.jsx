@@ -13,7 +13,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-
 import './App.css';
 
 const App = () => {
@@ -97,6 +96,7 @@ const App = () => {
             <TextField
               fullWidth
               select // Esta propiedad convierte el TextField en un Select
+              sx={{ opacity: 0.5, marginBottom: '10px' }}
               id='tipoDeContenido'
               name='tipoDeContenido'
               label='Selecciona el tipo de contenido'
@@ -116,7 +116,7 @@ const App = () => {
               fullWidth
               id='titulo'
               name='titulo'
-              sx={!formik.values.tipoDeContenido ? { opacity: 0.5 } : {}}
+              sx={!formik.values.tipoDeContenido ? { opacity: 0.5, marginBottom: '10px' } : { marginBottom: '10px' }}
               label='Título'
               value={formik.values.titulo}
               onChange={formik.handleChange}
@@ -130,7 +130,7 @@ const App = () => {
               fullWidth
               id='autor'
               name='autor'
-              sx={!formik.values.tipoDeContenido ? { opacity: 0.5 } : {}}
+              sx={!formik.values.tipoDeContenido ? { opacity: 0.5, marginBottom: '10px' } : { marginBottom: '10px' }}
               label='Autor'
               value={formik.values.autor}
               onChange={formik.handleChange}
@@ -142,13 +142,13 @@ const App = () => {
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                fullWidth
                 id='fechaDePublicacion'
                 name='fechaDePublicacion'
                 label='Fecha de Publicación'
+                format='DD-MM-YYYY'
                 value={formik.values.fechaDePublicacion}
                 onChange={(newValue) => formik.setFieldValue('fechaDePublicacion', newValue)}
-                sx={!formik.values.tipoDeContenido ? { opacity: 0.5 } : {}}
+                sx={!formik.values.tipoDeContenido ? { opacity: 0.5, width: '100%' } : { width: '100%' }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -166,7 +166,13 @@ const App = () => {
             {formik.values.tipoDeContenido === 'audio' && <AudioContent formik={formik} />}
             {formik.values.tipoDeContenido === 'texto' && <TextoContent formik={formik} />}
 
-            <Button color='primary' variant='contained' fullWidth type='submit'>
+            <Button
+              color='primary'
+              variant='contained'
+              fullWidth
+              type='submit'
+              sx={{ marginTop: '10px' }}
+              disabled={!formik.values.tipoDeContenido}>
               Enviar
             </Button>
           </form>
