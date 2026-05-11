@@ -61,9 +61,7 @@ const App = () => {
       const contenidosPrevios = JSON.parse(localStorage.getItem('listaContenidos')) || [];
       const nuevaLista = [nuevoContenido, ...contenidosPrevios];
       localStorage.setItem('listaContenidos', JSON.stringify(nuevaLista));
-
-      console.log('%cDatos a enviar:', 'background-color: #288f09; padding: 5px; display: block;', nuevoContenido);
-
+      
       goTo('/contents');
       formik.resetForm();
     },

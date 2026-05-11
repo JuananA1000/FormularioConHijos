@@ -12,13 +12,11 @@ export const ContentsList = ({ lista, onDelete }) => {
   const eliminarContenido = (it) => {
     const listaActualizada = lista.filter((item) => item.id !== it.id);
     localStorage.setItem('listaContenidos', JSON.stringify(listaActualizada));
-    window.dispatchEvent(new Event('storage')); // Forzar actualización en otros componentes
-    
+    window.dispatchEvent(new Event('storage'));
+
     if (onDelete) {
       onDelete(listaActualizada);
     }
-
-    console.log(`Contenido con ID ${it.id} eliminado`);
   };
 
   return (

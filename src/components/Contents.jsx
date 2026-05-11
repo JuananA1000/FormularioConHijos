@@ -15,7 +15,6 @@ export const Contents = () => {
     localStorage.removeItem('listaContenidos');
     setLista([]);
     setPasoBorrado(0);
-    console.log('%cBiblioteca purgada', 'background-color: #d32f2f; color: white; padding: 5px;');
   };
 
   const cancelarBorrado = () => setPasoBorrado(0);
