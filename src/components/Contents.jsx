@@ -43,19 +43,22 @@ export const Contents = () => {
         <DialogActions>
           <Button onClick={cancelarBorrado}>No, no</Button>
           <Button onClick={borrarTodo} color='error' variant='contained'>
-            QUE SÍ, COJONES
+            QUE SÍIIIIIIII
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* --- LISTADO DE CONTENIDOS --- */}
       <ContentsList lista={lista} />
 
       {/* Botón de borrado al final */}
-      {lista.length > 0 && (
+      {lista.length > 0 ? (
         <Button variant='outlined' color='error' fullWidth onClick={() => setPasoBorrado(1)}>
           Borrar todo el contenido
         </Button>
+      ) : (
+        <Typography variant='body1' align='center' color='text.secondary'>
+          No hay contenidos guardados. Agrega algunos desde el formulario.
+        </Typography>
       )}
     </Box>
   );

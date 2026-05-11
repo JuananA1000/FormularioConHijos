@@ -176,6 +176,10 @@ const App = () => {
               Enviar
             </Button>
           </form>
+
+          <Button onClick={() => goTo('/contents')} color='secondary' variant='outlined' fullWidth sx={{ marginTop: '10px' }}>
+            Ver Contenidos Guardados
+          </Button>
         </>
       )}
 
