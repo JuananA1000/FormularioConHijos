@@ -1,12 +1,24 @@
 import React from 'react';
-import { Stack, Paper, Box, Typography, CardMedia } from '@mui/material';
+import { Stack, Paper, Box, Typography, CardMedia, Button } from '@mui/material';
 
-export const ContentsList = ({ lista }) => {
+export const ContentsList = ({ lista, onDelete }) => {
   const getYouTubeID = (url) => {
     if (!url) return null;
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  const eliminarContenido = (it) => {
+    const listaActualizada = lista.filter((item) => item.id !== it.id);
+    localStorage.setItem('listaContenidos', JSON.stringify(listaActualizada));
+    window.dispatchEvent(new Event('storage')); // Forzar actualización en otros componentes
+    
+    if (onDelete) {
+      onDelete(listaActualizada);
+    }
+
+    console.log(`Contenido con ID ${it.id} eliminado`);
   };
 
   return (
@@ -70,6 +82,10 @@ export const ContentsList = ({ lista }) => {
                 TIPO: {item.tipoDeContenido.toUpperCase()}
               </Typography>
             </Box>
+
+            <Button variant='outlined' color='error' onClick={() => eliminarContenido(item)}>
+              🗑️
+            </Button>
           </Paper>
         );
       })}

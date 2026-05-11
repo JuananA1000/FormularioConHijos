@@ -20,6 +20,10 @@ export const Contents = () => {
 
   const cancelarBorrado = () => setPasoBorrado(0);
 
+  const handleDelete = (listaActualizada) => {
+    setLista(listaActualizada);
+  };
+
   return (
     <Box sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
       <Typography variant='h4' gutterBottom align='center'>
@@ -48,7 +52,7 @@ export const Contents = () => {
         </DialogActions>
       </Dialog>
 
-      <ContentsList lista={lista} />
+      <ContentsList lista={lista} onDelete={handleDelete} />
 
       {/* Botón de borrado al final */}
       {lista.length > 0 ? (
