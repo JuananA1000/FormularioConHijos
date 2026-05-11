@@ -90,8 +90,8 @@ const App = () => {
   return (
     <div className='app'>
       {path === '/' && (
-        <>
-          <h1>Formulario de Contenido</h1>
+        <Box sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
+          <h1 style={{ textAlign: 'center' }}>Formulario de Contenido</h1>
           <form onSubmit={formik.handleSubmit}>
             <TextField
               fullWidth
@@ -177,10 +177,10 @@ const App = () => {
             </Button>
           </form>
 
-          <Button onClick={() => goTo('/contents')} color='secondary' variant='outlined' fullWidth sx={{ marginTop: '10px' }}>
+          <Button onClick={() => goTo('/contents')} color='info' variant='outlined' fullWidth sx={{ marginTop: '10px' }}>
             Ver Contenidos Guardados
           </Button>
-        </>
+        </Box>
       )}
 
       {path === '/contents' && (
