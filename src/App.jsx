@@ -73,12 +73,18 @@ const App = () => {
         tipoDeContenido: values.tipoDeContenido,
         titulo: values.titulo,
         autor: values.autor,
-        fechaDePublicacion: dayjs(values.fechaDePublicacion).format('DD-MM-YYYY'),
-        [campoExtra]: values[campoExtra], // Propiedad dinámica
+        fechaDePublicacion: values.fechaDePublicacion ? dayjs(values.fechaDePublicacion).format('DD-MM-YYYY') : '',
+        [campoExtra]: values[campoExtra],
       };
+
+      // Eliminar campos vacíos
+      nuevoContenido = Object.fromEntries(
+        Object.entries(nuevoContenido).filter(([_, value]) => value !== '' && value !== null && value !== undefined),
+      );
 
       const contenidosPrevios = JSON.parse(localStorage.getItem('listaContenidos')) || [];
       const nuevaLista = [nuevoContenido, ...contenidosPrevios];
+
       localStorage.setItem('listaContenidos', JSON.stringify(nuevaLista));
 
       goTo('/contents');
