@@ -182,12 +182,7 @@ const App = () => {
       )}
 
       {path === '/contents' && (
-        <>
-          <Contents />
-          <Button onClick={() => goTo('/')} color='primary' variant='contained' fullWidth>
-            Volver
-          </Button>
-        </>
+        <Contents onBack={() => goTo('/')} />
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { ContentsList } from './ContentsList';
 
-export const Contents = () => {
+export const Contents = ({ onBack }) => {
   const [lista, setLista] = useState([]);
   const [pasoBorrado, setPasoBorrado] = useState(0);
 
@@ -25,9 +25,14 @@ export const Contents = () => {
 
   return (
     <Box sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
-      <Typography variant='h4' gutterBottom align='center'>
-        Mi Biblioteca
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant='h4' gutterBottom sx={{ margin: 0 }}>
+          Mi Biblioteca
+        </Typography>
+        <Button size='small' variant='contained' color='primary' onClick={onBack}>
+          Volver
+        </Button>
+      </Box>
 
       {/* Confirmación 1 */}
       <Dialog open={pasoBorrado === 1} onClose={cancelarBorrado}>
