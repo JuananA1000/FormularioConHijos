@@ -8,10 +8,14 @@ import { TextoContent } from './components/contents/TextoContent';
 import { Contents } from './components/Contents';
 
 import { TextField, Button, Box, Typography, MenuItem } from '@mui/material';
+
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import dayjs from 'dayjs';
+
+import * as Yup from 'yup';
 
 import './App.css';
 
@@ -22,6 +26,24 @@ const App = () => {
     window.history.pushState({}, '', path);
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
+
+  const validacionYUP = Yup.object({
+    tipoDeContenido: Yup.string().required('Selecciona un tipo de contenido'),
+    titulo: Yup.string().required('El título es obligatorio'),
+
+    videoUrl: Yup.string().when('tipoDeContenido', {
+      is: 'video',
+      then: (schema) => schema.required('La URL del video es obligatoria'),
+    }),
+    audioUrl: Yup.string().when('tipoDeContenido', {
+      is: 'audio',
+      then: (schema) => schema.required('La URL del audio es obligatoria'),
+    }),
+    texto: Yup.string().when('tipoDeContenido', {
+      is: 'texto',
+      then: (schema) => schema.required('El texto es obligatorio'),
+    }),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -35,6 +57,8 @@ const App = () => {
       texto: '',
     },
 
+    validationSchema: validacionYUP,
+
     onSubmit: (values) => {
       const camposPorTipo = {
         video: 'videoUrl',
@@ -43,11 +67,6 @@ const App = () => {
       };
 
       const campoExtra = camposPorTipo[values.tipoDeContenido];
-
-      if (!values.titulo || !values.autor || !values.fechaDePublicacion || !values[campoExtra]) {
-        alert(`Por favor, completa TODOS LOS CAMPOS para el contenido de ${values.tipoDeContenido}.`);
-        return;
-      }
 
       let nuevoContenido = {
         id: Date.now(),
@@ -61,7 +80,7 @@ const App = () => {
       const contenidosPrevios = JSON.parse(localStorage.getItem('listaContenidos')) || [];
       const nuevaLista = [nuevoContenido, ...contenidosPrevios];
       localStorage.setItem('listaContenidos', JSON.stringify(nuevaLista));
-      
+
       goTo('/contents');
       formik.resetForm();
     },
@@ -175,15 +194,18 @@ const App = () => {
             </Button>
           </form>
 
-          <Button onClick={() => goTo('/contents')} color='info' variant='outlined' fullWidth sx={{ marginTop: '10px' }}>
+          <Button
+            onClick={() => goTo('/contents')}
+            color='info'
+            variant='outlined'
+            fullWidth
+            sx={{ marginTop: '10px' }}>
             Ver Contenidos Guardados
           </Button>
         </Box>
       )}
 
-      {path === '/contents' && (
-        <Contents onBack={() => goTo('/')} />
-      )}
+      {path === '/contents' && <Contents onBack={() => goTo('/')} />}
     </div>
   );
 };
