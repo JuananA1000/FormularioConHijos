@@ -25,14 +25,9 @@ export const Contents = ({ onBack }) => {
 
   return (
     <Box sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant='h4' gutterBottom sx={{ margin: 0 }}>
-          Mi Biblioteca
-        </Typography>
-        <Button size='small' variant='contained' color='primary' onClick={onBack}>
-          Volver
-        </Button>
-      </Box>
+      <Typography variant='h4' gutterBottom sx={{ margin: 0 }}>
+        Mi Biblioteca
+      </Typography>
 
       {/* Confirmación 1 */}
       <Dialog open={pasoBorrado === 1} onClose={cancelarBorrado}>
@@ -60,14 +55,20 @@ export const Contents = ({ onBack }) => {
 
       {/* Botón de borrado al final */}
       {lista.length > 0 ? (
-        <Button variant='outlined' color='error' fullWidth onClick={() => setPasoBorrado(1)}>
+        <Button variant='outlined' color='error' fullWidth onClick={() => setPasoBorrado(1)} sx={{ mb: 2 }}>
           Borrar todo el contenido
         </Button>
       ) : (
-        <Typography variant='body1' align='center' color='text.secondary'>
-          No hay contenidos guardados. Agrega algunos desde el formulario.
-        </Typography>
+        <>
+          <Typography variant='body1' align='center' color='text.secondary'>
+            No hay contenidos guardados. Agrega algunos desde el formulario.
+          </Typography>
+        </>
       )}
+
+      <Button size='small' variant='contained' color='error' fullWidth onClick={onBack}>
+        Volver
+      </Button>
     </Box>
   );
 };
