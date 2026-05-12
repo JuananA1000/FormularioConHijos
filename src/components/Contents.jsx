@@ -6,22 +6,19 @@ export const Contents = ({ onBack }) => {
   const [lista, setLista] = useState([]);
   const [pasoBorrado, setPasoBorrado] = useState(0);
 
-  useEffect(() => {
-    const datosGuardados = JSON.parse(localStorage.getItem('listaContenidos')) || [];
-    setLista(datosGuardados);
-  }, []);
-
-  const borrarTodo = () => {
+  const handleBorrarTodo = () => {
     localStorage.removeItem('listaContenidos');
     setLista([]);
     setPasoBorrado(0);
   };
 
+  const handleBorrarElemento = (listaActualizada) => setLista(listaActualizada);
   const cancelarBorrado = () => setPasoBorrado(0);
 
-  const handleDelete = (listaActualizada) => {
-    setLista(listaActualizada);
-  };
+  useEffect(() => {
+    const datosGuardados = JSON.parse(localStorage.getItem('listaContenidos')) || [];
+    setLista(datosGuardados);
+  }, []);
 
   return (
     <Box sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
@@ -45,13 +42,13 @@ export const Contents = ({ onBack }) => {
         <DialogTitle>¿Seguro, seguro?</DialogTitle>
         <DialogActions>
           <Button onClick={cancelarBorrado}>No, no</Button>
-          <Button onClick={borrarTodo} color='error' variant='contained'>
+          <Button onClick={handleBorrarTodo} color='error' variant='contained'>
             QUE SÍIIIIIIII
           </Button>
         </DialogActions>
       </Dialog>
 
-      <ContentsList lista={lista} onDelete={handleDelete} />
+      <ContentsList lista={lista} onDelete={handleBorrarElemento} />
 
       {/* Botón de borrado al final */}
       {lista.length > 0 ? (
@@ -66,7 +63,7 @@ export const Contents = ({ onBack }) => {
         </>
       )}
 
-      <Button size='small' variant='contained' color='error' fullWidth onClick={onBack}>
+      <Button size='small' variant='contained' color='error' fullWidth onClick={onBack} sx={{ mt: 2 }}>
         Volver
       </Button>
     </Box>
